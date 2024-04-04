@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CompanyService } from '../company.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Company } from '../company';
@@ -7,11 +12,11 @@ import { Company } from '../company';
 @Component({
   selector: 'fbc-company-edit',
   templateUrl: './company-edit.component.html',
-  styleUrl: './company-edit.component.scss'
+  styleUrl: './company-edit.component.scss',
 })
 export class CompanyEditComponent implements OnInit {
-
   companyId!: number;
+  isNewCompany!: boolean;
 
   // formGroup = new FormGroup({
   //   name: new FormControl(''),
@@ -36,15 +41,22 @@ export class CompanyEditComponent implements OnInit {
     private companyService: CompanyService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.companyId = +this.activatedRoute.snapshot.params['id'];
+    this.companyId = this.activatedRoute.snapshot.params['id'] || 0;
+    this.isNewCompany = !this.companyId;
 
-    // TODO: need to handle add scenario - do not call service
+    console.log('company edit loaded', {
+      companyId: this.companyId,
+      isNewCompany: this.isNewCompany
+    });
 
-    this.companyService.getCompany(this.companyId)
-      .subscribe(company => this.formGroup.patchValue(company));
+    if (!this.isNewCompany) {
+      this.companyService
+        .getCompany(this.companyId)
+        .subscribe((company) => this.formGroup.patchValue(company));
+    }
   }
 
   submitForm() {
@@ -57,9 +69,20 @@ export class CompanyEditComponent implements OnInit {
       id: this.companyId,
     } as Company;
 
-    this.companyService.updateCompany(company)
-      .subscribe(_ => this.router.navigateByUrl('/company/list'));
+    const serviceAction = this.isNewCompany
+      ? this.companyService.addCompany(company)
+      : this.companyService.updateCompany(company);
 
-    // TODO: handle add scenario
+    serviceAction.subscribe((_) => this.router.navigateByUrl('/company/list'));
+
+    // if (this.isNewCompany) {
+    //   this.companyService
+    //     .addCompany(company)
+    //     .subscribe((_) => this.router.navigateByUrl('/company/list'));
+    // } else {
+    //   this.companyService
+    //     .updateCompany(company)
+    //     .subscribe((_) => this.router.navigateByUrl('/company/list'));
+    // }
   }
 }

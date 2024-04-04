@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Company } from '../company';
 import { CompanyService } from '../company.service';
+import { Observable, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fbc-company-list',
@@ -9,7 +10,7 @@ import { CompanyService } from '../company.service';
 })
 export class CompanyListComponent implements OnInit {
 
-  companies: Company[] = [];
+  companies$!: Observable<Company[]>;
 
   constructor(
     private readonly companyService: CompanyService
@@ -21,6 +22,6 @@ export class CompanyListComponent implements OnInit {
   }
 
   private getCompanies(): void {
-    this.companies = this.companyService.getCompanies();
+    this.companies$ = this.companyService.getCompanies();
   }
 }

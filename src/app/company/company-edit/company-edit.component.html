@@ -32,7 +32,9 @@
   </div>
 
   <div class="form-group pt-4">
-    <button type="button" class="btn btn-primary" [disabled]="formGroup.invalid">
+    <button type="button" class="btn btn-primary"
+      [disabled]="formGroup.invalid"
+      (click)="submitForm()">
       Submit
     </button>
   </div>

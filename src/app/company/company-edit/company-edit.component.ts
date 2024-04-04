@@ -8,7 +8,9 @@ import {
 import { CompanyService } from '../company.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Company } from '../company';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'fbc-company-edit',
   templateUrl: './company-edit.component.html',
@@ -33,6 +35,7 @@ export class CompanyEditComponent implements OnInit {
   formGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
+    checkPhone: [false],
     phone: [''],
   });
 
@@ -57,6 +60,20 @@ export class CompanyEditComponent implements OnInit {
         .getCompany(this.companyId)
         .subscribe((company) => this.formGroup.patchValue(company));
     }
+
+    this.formGroup.get('checkPhone')?.valueChanges.subscribe(checkPhoneChecked => {
+      const phoneControl = this.formGroup.get('phone');
+
+      if (checkPhoneChecked) {
+        phoneControl?.setValidators(Validators.required);
+        phoneControl?.enable();
+      } else {
+        phoneControl?.clearValidators();
+        phoneControl?.disable();
+      }
+
+      phoneControl?.updateValueAndValidity();
+    })
   }
 
   submitForm() {

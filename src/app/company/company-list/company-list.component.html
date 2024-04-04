@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+  </tr>
+  @for(company of companies; track company) {
+    <tr>
+      <td>{{ company.name }}</td>
+      <td>{{ company.email }}</td>
+      <td>{{ company.phone }}</td>
+    </tr>
+  }
+</table>
+

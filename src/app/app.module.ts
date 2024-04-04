@@ -9,13 +9,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CompanyTableComponent } from './company/company-table/company-table.component';
 import { CompanyEditComponent } from './company/company-edit/company-edit.component';
+import { IsAdminDirective } from './user/is-admin.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     CompanyListComponent,
     CompanyTableComponent,
-    CompanyEditComponent
+    CompanyEditComponent,
+    IsAdminDirective
   ],
   imports: [
     BrowserModule,

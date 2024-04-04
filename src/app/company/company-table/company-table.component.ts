@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Company } from '../company';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'fbc-company-table',
@@ -9,8 +8,8 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyTableComponent {
-  @Input()
-  companies$!: Observable<Company[]>;
+  @Input({ required: true })
+  companies!: Company[];
 
   @Output()
   deleteCompany = new EventEmitter<Company>();

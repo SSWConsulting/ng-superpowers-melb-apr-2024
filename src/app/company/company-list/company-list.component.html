@@ -4,6 +4,6 @@
 </h1>
 
 <fbc-company-table
-  [companies$]="companies$"
+  [companies]="(companies$ | async) || []"
   (deleteCompany)="deleteCompany($event)"
 ></fbc-company-table>
